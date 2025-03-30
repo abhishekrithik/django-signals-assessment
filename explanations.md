@@ -64,3 +64,41 @@ try:
 except Exception as e:
     print(f"Exception caught: {e}")
 ```
+
+
+# Custom Classes in Python
+
+## Rectangle Class Implementation  
+
+### Requirements:
+- An instance of the `Rectangle` class requires `length: int` and `width: int` to be initialized.
+- We can iterate over an instance of the `Rectangle` class.
+- When iterated, it should return:
+  ```json
+  {"length": <VALUE_OF_LENGTH>}
+  {"width": <VALUE_OF_WIDTH>}
+  ```
+
+### Implementation:
+
+```python
+class Rectangle:
+    def __init__(self, length: int, width: int):
+        self.length = length
+        self.width = width
+
+    def __iter__(self):
+        yield {"length": self.length}
+        yield {"width": self.width}
+
+# Testing the iteration
+rect = Rectangle(10, 5)
+for dimension in rect:
+    print(dimension)  # Expected Output: {'length': 10}, {'width': 5}
+```
+
+### Explanation:
+- The class requires `length` and `width` during initialization.
+- The `__iter__` method allows us to iterate over an instance.
+- It **yields** first the `length` in the required format, then the `width`.
+
