@@ -17,6 +17,12 @@ def slow_signal(sender, instance, **kwargs):
     print("Signal started...")
     time.sleep(5)  # Delays execution by 5 seconds
     print("Signal finished after 5 seconds.")
+
+# Testing
+user = User(username="testuser")
+print("Before saving user...")
+user.save()  # This should block for 5 seconds before proceeding
+print("After saving user...")
 ```
 
 
@@ -35,6 +41,10 @@ from django.contrib.auth.models import User
 @receiver(post_save, sender=User)
 def check_thread(sender, instance, **kwargs):
     print(f"Signal is running in thread: {threading.current_thread().name}")
+
+# Testing
+print(f"Main thread: {threading.current_thread().name}")
+User.objects.create(username="testuser", email="test@example.com")
 ```
 
 
@@ -63,6 +73,12 @@ try:
         User.objects.create(username="rollback_test_user", email="rollback@example.com")
 except Exception as e:
     print(f"Exception caught: {e}")
+
+# Checking if user was actually saved
+if User.objects.filter(username="rollback_test_user").exists():
+    print("User was saved despite the signal error!")
+else:
+    print("User was NOT saved due to atomic transaction rollback.")
 ```
 
 
